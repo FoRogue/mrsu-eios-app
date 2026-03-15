@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../core/constants.dart';
 
 class AuthService {
-  // Метод возвращает true, если вход успешен, и false, если ошибка
   Future<bool> login(String username, String password) async {
     try {
       final response = await http.post(
@@ -22,20 +21,17 @@ class AuthService {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final accessToken = data['access_token'];
-
-        // Сохраняем токен
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('access_token', accessToken);
         return true;
       }
-      return false; // Неверный логин/пароль
+      return false;
     } catch (e) {
-      print('Ошибка сети AuthService: $e');
+      print('Ошибка: $e'); // Чуть ниже объясню про эти принты
       return false;
     }
   }
 
-  // Метод для выхода из аккаунта
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');

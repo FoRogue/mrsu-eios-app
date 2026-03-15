@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../core/constants.dart';
 import '../api/auth_service.dart';
 import 'login_screen.dart';
+import 'performance_screen.dart';
+import 'schedule_screen.dart';
+import 'communications_screen.dart'; // Наш новый экран!
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,12 +16,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  // Функция выхода из профиля
   void _logout() async {
-    // Вызываем очистку токена из сервиса
     await AuthService().logout();
-
-    // Перекидываем пользователя обратно на экран логина
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const LoginScreen()),
@@ -27,11 +26,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Вставляем кнопку выхода на 4-й экран
     final List<Widget> pages = [
-      const Center(child: Text('Экран: Расписание', style: TextStyle(fontSize: 24))),
-      const Center(child: Text('Экран: Успеваемость', style: TextStyle(fontSize: 24))),
-      const Center(child: Text('Экран: Общение', style: TextStyle(fontSize: 24))),
+      const ScheduleScreen(),
+      const PerformanceScreen(),
+      const CommunicationsScreen(), // Подключили новый раздел "Общение"
       Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
               icon: const Icon(Icons.logout),
               label: const Text('Выйти из профиля'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent, // Красная кнопка выхода
+                backgroundColor: Colors.redAccent,
                 foregroundColor: Colors.white,
               ),
             ),
@@ -69,10 +67,22 @@ class _MainScreenState extends State<MainScreen> {
         selectedItemColor: AppColors.primary,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Расписание'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Успеваемость'),
-          BottomNavigationBarItem(icon: Icon(Icons.forum), label: 'Общение'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Прочее'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Расписание',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Успеваемость',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.forum),
+            label: 'Общение',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz),
+            label: 'Прочее',
+          ),
         ],
       ),
     );
