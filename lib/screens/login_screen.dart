@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false;
   bool _obscurePassword = true; // Скрыт ли пароль
-  bool _rememberMe = false;     // Состояние галочки "Запомнить меня"
+  bool _rememberMe = false; // Состояние галочки "Запомнить меня"
 
   @override
   void initState() {
@@ -73,7 +73,10 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _isLoading = false);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ошибка входа. Проверьте данные.'), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('Ошибка входа. Проверьте данные.'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -88,16 +91,27 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.account_balance, size: 80, color: AppColors.primary),
+              const Icon(
+                Icons.account_balance,
+                size: 80,
+                color: AppColors.primary,
+              ),
               const SizedBox(height: 20),
               const Text(
                 'ЭИОС',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.primary),
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
               ),
               const SizedBox(height: 40),
               TextField(
                 controller: _loginController,
-                decoration: const InputDecoration(labelText: 'Логин', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                  labelText: 'Логин',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -110,7 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                       color: Colors.grey,
                     ),
                     onPressed: () {

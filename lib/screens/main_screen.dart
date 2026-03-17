@@ -4,7 +4,8 @@ import '../api/auth_service.dart';
 import 'login_screen.dart';
 import 'performance_screen.dart';
 import 'schedule_screen.dart';
-import 'communications_screen.dart'; // Наш новый экран!
+import 'communications_screen.dart';
+import 'tests_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -29,20 +30,49 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> pages = [
       const ScheduleScreen(),
       const PerformanceScreen(),
-      const CommunicationsScreen(), // Подключили новый раздел "Общение"
-      Center(
+      const CommunicationsScreen(),
+
+      // Вкладка "ПРОЧЕЕ" (строгий список с Outlined кнопками)
+      Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // Растягиваем кнопки по ширине
           children: [
-            const Text('Экран: Прочее', style: TextStyle(fontSize: 24)),
-            const SizedBox(height: 30),
-            ElevatedButton.icon(
+            OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TestsScreen()),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: const BorderSide(color: AppColors.primary),
+                foregroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Тесты',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
               onPressed: _logout,
-              icon: const Icon(Icons.logout),
-              label: const Text('Выйти из профиля'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                foregroundColor: Colors.white,
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: const BorderSide(color: Colors.redAccent),
+                foregroundColor: Colors.redAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Выйти из профиля',
+                style: TextStyle(fontSize: 16),
               ),
             ),
           ],
@@ -75,10 +105,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.school),
             label: 'Успеваемость',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum),
-            label: 'Общение',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.forum), label: 'Общение'),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz),
             label: 'Прочее',

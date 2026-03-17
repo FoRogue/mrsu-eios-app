@@ -27,7 +27,7 @@ class AuthService {
       }
       return false;
     } catch (e) {
-      print('Ошибка: $e'); // Чуть ниже объясню про эти принты
+      print('Ошибка: $e');
       return false;
     }
   }
