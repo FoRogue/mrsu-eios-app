@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
-import '../api/auth_service.dart';
-import 'login_screen.dart';
 import 'performance_screen.dart';
 import 'schedule_screen.dart';
 import 'communications_screen.dart';
 import 'tests_screen.dart';
+import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,14 +16,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  void _logout() async {
-    await AuthService().logout();
-    if (!mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
@@ -32,20 +23,21 @@ class _MainScreenState extends State<MainScreen> {
       const PerformanceScreen(),
       const CommunicationsScreen(),
 
-      // Вкладка "ПРОЧЕЕ" (строгий список с Outlined кнопками)
+      // Вкладка "ПРОЧЕЕ" (Только Профиль и Тесты)
       Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          // Растягиваем кнопки по ширине
           children: [
-            OutlinedButton(
+            OutlinedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TestsScreen()),
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
                 );
               },
+              icon: const Icon(Icons.person),
+              label: const Text('Мой профиль', style: TextStyle(fontSize: 16)),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 side: const BorderSide(color: AppColors.primary),
@@ -54,25 +46,24 @@ class _MainScreenState extends State<MainScreen> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                'Тесты',
-                style: TextStyle(fontSize: 16),
-              ),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: _logout,
+            OutlinedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TestsScreen()),
+                );
+              },
+              icon: const Icon(Icons.assignment),
+              label: const Text('Тесты', style: TextStyle(fontSize: 16)),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                side: const BorderSide(color: Colors.redAccent),
-                foregroundColor: Colors.redAccent,
+                side: const BorderSide(color: AppColors.primary),
+                foregroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-              ),
-              child: const Text(
-                'Выйти из профиля',
-                style: TextStyle(fontSize: 16),
               ),
             ),
           ],
@@ -96,6 +87,9 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.primary,
         unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        selectedFontSize: 11,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
@@ -105,7 +99,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.school),
             label: 'Успеваемость',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.forum), label: 'Общение'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.forum),
+              label: 'Общение'
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.more_horiz),
             label: 'Прочее',
