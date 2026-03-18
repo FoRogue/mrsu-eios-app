@@ -441,4 +441,13 @@ class ApiService {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('access_token');
   }
+
+  Future<Map<String, dynamic>?> getUserProfile() async {
+    debugPrint('[API SERVICE] Вызван getUserProfile');
+    final data = await _getAuthorizedRequest('User');
+    if (data is Map<String, dynamic>) {
+      return data;
+    }
+    return null;
+  }
 }
